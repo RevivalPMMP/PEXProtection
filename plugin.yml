@@ -1,0 +1,19 @@
+---
+name: PEXProtection
+author: RevivalPMMP
+api: [2.1.0, 2.0.0]
+main: RevivalPMMP\PEXProtection\Main
+version: 0.1.0
+
+commands:
+    pexprotection:
+        description: PEXProtection command
+        usage: /pexprotection <add/del>
+        aliases: [pexp]
+        permission: pexprotection.command
+        
+permissions:
+    pexprotection.command:
+        default: op
+        description: Permission to use all PexProtection commands
+...
