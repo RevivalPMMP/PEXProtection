@@ -122,7 +122,7 @@ class Main extends PluginBase implements Listener {
                 $p->sendMessage(TF::GREEN . "Succesfully added a protection center block with radius" . $this->radius . "!");
                 unset($this->tapping[$p->getName()]);
                 $this->setCenterBlock($this->blockname, $ev->getBlock(), $this->radius, $this->level);
-                $event->setCancelled();
+                $ev->setCancelled();
             } else {
                 $p->sendMessage(TF::RED . "A protection center block at that location already exists!");
             }
