@@ -4,7 +4,6 @@ author: RevivalPMMP
 api: [2.1.0, 2.0.0]
 main: RevivalPMMP\PEXProtection\Main
 version: 0.1.0
-depend: [PureEntitiesX]
 
 commands:
     pexprotection:
