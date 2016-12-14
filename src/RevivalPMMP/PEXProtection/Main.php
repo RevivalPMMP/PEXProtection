@@ -9,6 +9,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use magicode\pureentities\event\CreatureSpawnEvent;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\level\Position;
 use pocketmine\Player;
 
