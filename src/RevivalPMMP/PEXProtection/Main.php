@@ -61,7 +61,7 @@ class Main extends PluginBase implements Listener {
                     $this->getServer()->getLevelByName($center["level"])
                     );
             $entity = $event->getPosition();
-            if($entity->distance($pos) < $center["radius"]) {
+            if($entity->distance($pos) < $center["radius"] && $center["level"] === $event->getLevel()->getName()) {
                 $event->setCancelled();
             }
         }
