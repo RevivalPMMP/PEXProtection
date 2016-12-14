@@ -1,5 +1,6 @@
 # PEXProtection
 An addon plugin for the PureEntitiesX plugin.
+Get the latest official release here: https://github.com/RevivalPMMP/PEXProtection/releases
 
 ## What is this plugin?
 This plugin adds a way for Operators to change the way monsters are spawning automatically. Monsters can be blocked from spawning on certain places by adding a center and giving it a radius to block monster spawning within. This can be modified, removed and added using the centers.yml file.
