@@ -10,6 +10,7 @@ use pocketmine\command\CommandSender;
 use magicode\pureentities\event\CreatureSpawnEvent;
 use pocketmine\event\Listener;
 use pocketmine\level\Position;
+use pocketmine\Player;
 
 class Main extends PluginBase implements Listener {
     
