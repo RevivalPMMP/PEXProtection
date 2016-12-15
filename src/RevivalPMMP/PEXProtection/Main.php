@@ -7,7 +7,7 @@ use pocketmine\utils\TextFormat as TF;
 use pocketmine\utils\Config;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use magicode\pureentities\event\CreatureSpawnEvent;
+use revivalpmmp\pureentities\event\CreatureSpawnEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\level\Position;
