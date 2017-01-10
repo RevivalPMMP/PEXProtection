@@ -1,3 +1,4 @@
+[![Poggit-CI](https://poggit.pmmp.io/ci.badge/RevivalPMMP/PEXProtection/PEXProtection)](https://poggit.pmmp.io/ci/RevivalPMMP/PEXProtection/PEXProtection)
 # PEXProtection
 An addon plugin for the PureEntitiesX plugin.
 Get the latest official release here: https://github.com/RevivalPMMP/PEXProtection/releases
