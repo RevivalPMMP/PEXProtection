@@ -13,6 +13,9 @@ To start, you can use the command /pexprotection, or using the alias /pexp. To m
     
 After using this command, the plugin will tell you to select a block. You can select a block by tapping it, which will then be selected as the center block for the protection radius. When you've done that... You're done! Have fun!
 
+## Support
+You can get support on our [Forums](http://revivalpmmpforums.gq), please make sure you are following the guidelines and rules while posting 
+
 ## What are the permissions and commands?
 
     Commands:
