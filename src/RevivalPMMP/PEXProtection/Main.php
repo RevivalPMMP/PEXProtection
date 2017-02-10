@@ -15,11 +15,16 @@ use pocketmine\Player;
 
 class Main extends PluginBase implements Listener {
     
+	public $centers;
+	public $tapping;
+	
     public function onEnable() {
         $this->getServer()->getLogger()->info(TF::GREEN . "PEXProtector activated!");
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         @mkdir($this->getDataFolder());
-        $this->centers = new Config($this->getDataFolder() . "centers.yml", Config::YAML);
+        $this->centers = new Config($this->getDataFolder() . "centers.yml", Config::YAML, [
+        	"Disabled-Worlds" => []
+        ]);
     }
     
     public function isCenterBlock($blockname) {
@@ -59,9 +64,9 @@ class Main extends PluginBase implements Listener {
                     $center["y"],
                     $center["z"],
                     $this->getServer()->getLevelByName($center["level"])
-                    );
+            );
             $entity = $event->getPosition();
-            if($entity->distance($pos) < $center["radius"] && $center["level"] === $event->getLevel()->getName()) {
+            if(($entity->distance($pos) < $center["radius"] && $center["level"] === $event->getLevel()->getName()) || in_array($event->getLevel()->getName(), $this->centers->get("Disabled-Worlds"))) {
                 $event->setCancelled();
             }
         }
@@ -93,6 +98,17 @@ class Main extends PluginBase implements Listener {
                             }
                             return true;
                         
+	                    case "disableworld":
+	                    case "world":
+	                    	if(isset($args[1])) {
+	                    		$p->sendMessage(TF::GREEN . "Successfully added a world to disable monster spawning.");
+			                    $worlds = $this->centers->get("Disabled-Worlds");
+			                    $worlds[] = $args[1];
+			                    $this->centers->set("Disabled-Worlds", $worlds);
+			                    $this->centers->save();
+		                    }
+		                    return true;
+	                    
                         case "delete":
                         case "del":
                         case "remove":
