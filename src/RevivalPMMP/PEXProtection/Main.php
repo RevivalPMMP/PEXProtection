@@ -65,17 +65,17 @@ class Main extends PluginBase implements Listener {
 	    foreach($this->centers->getAll() as $center){
 		    if(!$center === $this->centers->get("Disabled-Worlds")) {
 			    $pos = new Position(
-                        $center["x"],
-                        $center["y"],
-                        $center["z"],
-                        $this->getServer()->getLevelByName($center["level"])
+				    $center["x"],
+				    $center["y"],
+				    $center["z"],
+				    $this->getServer()->getLevelByName($center["level"])
 			    );
 			    $entity = $event->getPosition();
 			    if(($entity->distance($pos) < $center["radius"] && $center["level"] === $event->getLevel()->getName()) || in_array($event->getLevel()->getName(), $this->centers->get("Disabled-Worlds"))) {
 				    $event->setCancelled();
 			    }
-            }
-        }
+		    }
+	    }
     }
     
     public function onCommand(CommandSender $p, Command $cmd, $label, array $args) {
