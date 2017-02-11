@@ -62,18 +62,18 @@ class Main extends PluginBase implements Listener {
     	if(in_array($event->getLevel()->getName(), $this->centers->get("Disabled-Worlds"))) {
 		    $event->setCancelled();
 	    }
-        foreach($this->centers->getAll() as $center){
-        	if(!$center === $this->centers->get("Disabled-Worlds")) {
-                $pos = new Position(
+	    foreach($this->centers->getAll() as $center){
+		    if(!$center === $this->centers->get("Disabled-Worlds")) {
+			    $pos = new Position(
                         $center["x"],
                         $center["y"],
                         $center["z"],
                         $this->getServer()->getLevelByName($center["level"])
-                );
-                $entity = $event->getPosition();
-                if(($entity->distance($pos) < $center["radius"] && $center["level"] === $event->getLevel()->getName()) || in_array($event->getLevel()->getName(), $this->centers->get("Disabled-Worlds"))) {
-	                $event->setCancelled();
-                }
+			    );
+			    $entity = $event->getPosition();
+			    if(($entity->distance($pos) < $center["radius"] && $center["level"] === $event->getLevel()->getName()) || in_array($event->getLevel()->getName(), $this->centers->get("Disabled-Worlds"))) {
+				    $event->setCancelled();
+			    }
             }
         }
     }
