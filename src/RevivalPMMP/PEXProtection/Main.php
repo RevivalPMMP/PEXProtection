@@ -51,23 +51,29 @@ class Main extends PluginBase implements Listener {
         $this->centers->save();
     }
     
-    public function inTapMode(Player $p) {
+    public function inTapMode(Player $p): bool {
         if(isset($this->tapping[$p->getName()])) {
             return true;
         }
+        return false;
     }
     
     public function onCreatureSpawn(CreatureSpawnEvent $event) {
+    	if(in_array($event->getLevel()->getName(), $this->centers->get("Disabled-Worlds"))) {
+    		$event->setCancelled();
+	    }
         foreach($this->centers->getAll() as $center){
-            $pos = new Position(
-                    $center["x"],
-                    $center["y"],
-                    $center["z"],
-                    $this->getServer()->getLevelByName($center["level"])
-            );
-            $entity = $event->getPosition();
-            if(($entity->distance($pos) < $center["radius"] && $center["level"] === $event->getLevel()->getName()) || in_array($event->getLevel()->getName(), $this->centers->get("Disabled-Worlds"))) {
-                $event->setCancelled();
+        	if(!$center === $this->centers->get("Disabled-Worlds")) {
+                $pos = new Position(
+                        $center["x"],
+                        $center["y"],
+                        $center["z"],
+                        $this->getServer()->getLevelByName($center["level"])
+                );
+                $entity = $event->getPosition();
+                if(($entity->distance($pos) < $center["radius"] && $center["level"] === $event->getLevel()->getName()) || in_array($event->getLevel()->getName(), $this->centers->get("Disabled-Worlds"))) {
+	                $event->setCancelled();
+                }
             }
         }
     }
