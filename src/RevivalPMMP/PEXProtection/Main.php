@@ -60,7 +60,7 @@ class Main extends PluginBase implements Listener {
     
     public function onCreatureSpawn(CreatureSpawnEvent $event) {
     	if(in_array($event->getLevel()->getName(), $this->centers->get("Disabled-Worlds"))) {
-    		$event->setCancelled();
+		    $event->setCancelled();
 	    }
         foreach($this->centers->getAll() as $center){
         	if(!$center === $this->centers->get("Disabled-Worlds")) {
