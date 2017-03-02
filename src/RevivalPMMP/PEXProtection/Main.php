@@ -35,9 +35,11 @@ class Main extends PluginBase implements Listener {
     
     public function isCenterBlockLocation($location) {
         foreach($this->centers->getAll() as $center) {
-            if($center["x"] == $location->x && $center["y"] == $location->y && $center["z"] == $location->z && $location->getLevel()->getName() === $center["level"]) {
-                return true;
-            }
+	    if(!$center === $this->centers->get("Disabled-Worlds")) {	
+                if($center["x"] == $location->x && $center["y"] == $location->y && $center["z"] == $location->z && $location->getLevel()->getName() === $center["level"]) {
+                    return true;
+                }
+	    }
         }
     }
     
