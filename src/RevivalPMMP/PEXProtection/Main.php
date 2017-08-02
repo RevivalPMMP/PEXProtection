@@ -80,7 +80,7 @@ class Main extends PluginBase implements Listener {
 	    }
     }
     
-    public function onCommand(CommandSender $p, Command $cmd, $label, array $args) {
+    public function onCommand(CommandSender $p, Command $cmd, string $label, array $args) : bool {
         if($cmd->getName() === "pexprotection") {
             if($p->hasPermission("pexprotection.command")) {
                 if(isset($args[1])) {
