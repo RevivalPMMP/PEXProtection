@@ -115,60 +115,58 @@ class Main extends PluginBase implements Listener {
 	* @return bool
 	*/
 	public function onCommand(CommandSender $sender, Command $command, string $commandLabel, array $args): bool {
-		if($command->getName() === "pexprotection") {
-			if($sender->hasPermission("pexprotection.command")) {
-				if(isset($args[1])) {
+		if($sender->hasPermission("pexprotection.command")) {
+			if(isset($args[1])) {
 
-					switch($args[0]) {
-						case "add":
-						case "set":
-						case "create":
-						case "make":
-							if(!($sender instanceof Player)) {
-								$sender->sendMessage(TextFormat::RED . "You cannot execute this command using console.");
-								return true;
-							}
-							if(!$this->isCenterBlock($args[1])) {
-								if(isset($args[2])) {
-									$sender->sendMessage(TF::AQUA . "Tap a block to add a protection center block with the name " . $args[1] . "!");
-									$this->tapping[$sender->getName()] = $sender->getName();
-									$this->blockName = $args[1];
-									$this->radius = (int) $args[2];
-								} else {
-									$sender->sendMessage(TF::RED . "You have to define a radius for the protection center block!");
-								}
-							} else {
-								$sender->sendMessage(TF::RED . "A protection center block with that name already exists");
-							}
+				switch($args[0]) {
+					case "add":
+					case "set":
+					case "create":
+					case "make":
+						if(!($sender instanceof Player)) {
+							$sender->sendMessage(TextFormat::RED . "You cannot execute this command using console.");
 							return true;
+						}
+						if(!$this->isCenterBlock($args[1])) {
+							if(isset($args[2])) {
+								$sender->sendMessage(TF::AQUA . "Tap a block to add a protection center block with the name " . $args[1] . "!");
+								$this->tapping[$sender->getName()] = $sender->getName();
+								$this->blockName = $args[1];
+								$this->radius = (int) $args[2];
+							} else {
+								$sender->sendMessage(TF::RED . "You have to define a radius for the protection center block!");
+							}
+						} else {
+							$sender->sendMessage(TF::RED . "A protection center block with that name already exists");
+						}
+						return true;
 
-						case "disableworld":
-						case "world":
-							$sender->sendMessage(TF::GREEN . "Successfully added a world to disable monster spawning.");
-							$worlds = $this->centers->get("Disabled-Worlds");
-							$worlds[] = $args[1];
-							$this->centers->set("Disabled-Worlds", $worlds);
+					case "disableworld":
+					case "world":
+						$sender->sendMessage(TF::GREEN . "Successfully added a world to disable monster spawning.");
+						$worlds = $this->centers->get("Disabled-Worlds");
+						$worlds[] = $args[1];
+						$this->centers->set("Disabled-Worlds", $worlds);
+						$this->centers->save();
+						return true;
+
+					case "delete":
+					case "del":
+					case "remove":
+					case "rem":
+					case "clear":
+						if($this->isCenterBlock($args[1])) {
+							$sender->sendMessage(TF::AQUA . "Successfully removed the protection center block " . $args[1] . "!");
+							$this->centers->remove($args[1]);
 							$this->centers->save();
-							return true;
-
-						case "delete":
-						case "del":
-						case "remove":
-						case "rem":
-						case "clear":
-							if($this->isCenterBlock($args[1])) {
-								$sender->sendMessage(TF::AQUA . "Successfully removed the protection center block " . $args[1] . "!");
-								$this->centers->remove($args[1]);
-								$this->centers->save();
-							} else {
-								$sender->sendMessage(TF::RED . "That protection center block name does not exist.");
-							}
-							return true;
-					}
-				} else {
-					$sender->sendMessage(TF::RED . "Please provide a valid protection center block name!");
-					return true;
+						} else {
+							$sender->sendMessage(TF::RED . "That protection center block name does not exist.");
+						}
+						return true;
 				}
+			} else {
+				$sender->sendMessage(TF::RED . "Please provide a valid protection center block name!");
+				return true;
 			}
 		}
 		return false;
