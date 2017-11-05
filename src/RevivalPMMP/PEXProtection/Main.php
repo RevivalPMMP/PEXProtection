@@ -16,14 +16,22 @@ use pocketmine\Player;
 
 class Main extends PluginBase implements Listener {
 
-    /**
-     * @var Config
-     */
+    /** @var Config */
     public $centers;
+
+    /** @var array */
 	private $tapping;
+
+	/** @var string */
 	private $level;
+
+	/** @var string */
     private $blockName;
+
+    /** @var int */
     private $radius;
+
+    /** @var bool */
     private $allMobs;
 
     public function onEnable() {
@@ -32,11 +40,19 @@ class Main extends PluginBase implements Listener {
         $this->centers = new Config($this->getDataFolder() . "centers.yml", Config::YAML);
         $this->getServer()->getLogger()->info(TF::GREEN . "PEXProtector Enabled!");
     }
-    
+
+    /**
+     * @param string $blockName
+     * @return bool
+     */
     public function isCenterBlock(string $blockName) {
         return $this->centers->exists($blockName);
     }
-    
+
+    /**
+     * @param Block $location
+     * @return bool
+     */
     public function isCenterBlockLocation(Block $location) {
         foreach($this->centers->getAll() as $center) {
             if($center["xPos"] === $location->x
@@ -48,7 +64,16 @@ class Main extends PluginBase implements Listener {
         }
         return false;
     }
-    
+
+    /**
+     * Adds passed parameters to centers.yml file
+     *
+     * @param string $blockName
+     * @param Block $location
+     * @param int $radius
+     * @param string $level
+     * @param bool $allMobs
+     */
     public function setCenterBlock(string $blockName, Block $location, int $radius, string $level, bool $allMobs) {
         $this->centers->set($blockName, array(
             "xPos" => $location->getX(),
@@ -60,14 +85,21 @@ class Main extends PluginBase implements Listener {
         ));
         $this->centers->save();
     }
-    
+
+    /**
+     * @param Player $p
+     * @return bool
+     */
     public function inTapMode(Player $p): bool {
         if(isset($this->tapping[$p->getName()])) {
             return true;
         }
         return false;
     }
-    
+
+    /**
+     * @param CreatureSpawnEvent $event
+     */
     public function onCreatureSpawn(CreatureSpawnEvent $event) {
     	if(in_array($event->getLevel()->getName(), $this->getConfig()->get("Disabled-Worlds"))) {
 		    $event->setCancelled();
@@ -87,7 +119,14 @@ class Main extends PluginBase implements Listener {
             }
 	    }
     }
-    
+
+    /**
+     * @param CommandSender $p
+     * @param Command $cmd
+     * @param string $label
+     * @param array $args
+     * @return bool
+     */
     public function onCommand(CommandSender $p, Command $cmd, string $label, array $args) : bool {
         if($cmd->getName() === "pexprotection") {
             if($p->hasPermission("pexprotection.command") && $p instanceof Player) {
@@ -158,7 +197,10 @@ class Main extends PluginBase implements Listener {
         }
         return false;
     }
-    
+
+    /**
+     * @param PlayerInteractEvent $ev
+     */
     public function onInteract(PlayerInteractEvent $ev) {
         $p = $ev->getPlayer();
         if($this->inTapMode($p)) {
