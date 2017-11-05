@@ -1,5 +1,6 @@
 ---
-# World where entities will not be allowed to spawn automatically.
+# Worlds where entities will not be allowed to spawn automatically.
+# eg Disabled-Worlds: [world, lobby, arena, home]
 Disabled-Worlds: []
 
 # Setting All-Mobs to true will prevent all entitys from spawning in protected areas.
