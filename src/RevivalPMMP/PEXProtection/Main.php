@@ -164,11 +164,10 @@ class Main extends PluginBase implements Listener {
 				case "disableworld":
 				case "world":
 					$sender->sendMessage(TF::GREEN . "Successfully added a world to disable monster spawning.");
-					$worlds = $this->centers->get("Disabled-Worlds");
+					$worlds = $this->getConfig()->get("Disabled-Worlds");
 					$worlds[] = $args[1];
-					$this->centers->set("Disabled-Worlds", $worlds);
-					$this->centers->save(true);
-
+					$this->getConfig()->set("Disabled-Worlds", $worlds);
+					$this->getConfig()->save(true);
 					return true;
 					break;
 				case "delete":
