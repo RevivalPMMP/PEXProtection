@@ -14,43 +14,43 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\level\Position;
 use pocketmine\Player;
 
-class Main extends PluginBase implements Listener {
+class Main extends PluginBase implements Listener{
 
-	/** @var Config */
-	public $centers;
-	/** @var array */
-	private $tapping = [];
-	/** @var string */
-	private $level;
-	/** @var string */
-	private $blockName = "";
-	/** @var int */
-	private $radius = 0;
-	/** @var bool */
-	private $allMobs;
-	
-	public function onEnable(): void {
-		$this->getServer()->getPluginManager()->registerEvents($this, $this);
-		$this->saveDefaultConfig();
+    /** @var Config */
+    public $centers;
+    /** @var array */
+    private $tapping = [];
+    /** @var string */
+    private $level;
+    /** @var string */
+    private $blockName = "";
+    /** @var int */
+    private $radius = 0;
+    /** @var bool */
+    private $allMobs;
+
+    public function onEnable() : void{
+        $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        $this->saveDefaultConfig();
         $this->centers = new Config($this->getDataFolder() . "centers.yml", Config::YAML);
         $this->getServer()->getLogger()->info(TF::GREEN . "PEXProtector Enabled!");
-	}
+    }
 
-	/**
-	* @param string $blockName
-	*
-	* @return bool
-	*/
-	public function isCenterBlock(string $blockName): bool {
-		return $this->centers->exists($blockName);
-	}
+    /**
+     * @param string $blockName
+     *
+     * @return bool
+     */
+    public function isCenterBlock(string $blockName) : bool{
+        return $this->centers->exists($blockName);
+    }
 
-	/**
-	* @param Position $position
-	*
-	* @return bool
-	*/
-	public function isCenterBlockLocation(Block $location){
+    /**
+     * @param Position $position
+     *
+     * @return bool
+     */
+    public function isCenterBlockLocation(Block $location){
         foreach($this->centers->getAll() as $center){
             if($center["xPos"] === $location->x
                 && $center["yPos"] === $location->y
@@ -62,7 +62,7 @@ class Main extends PluginBase implements Listener {
         return false;
     }
 
-	/**
+    /**
      * Adds passed parameters to centers.yml file
      *
      * @param string $blockName
@@ -71,7 +71,7 @@ class Main extends PluginBase implements Listener {
      * @param string $level
      * @param bool   $allMobs
      */
-	public function setCenterBlock(string $blockName, Position $location, int $radius, string $level, bool $allMobs){
+    public function setCenterBlock(string $blockName, Position $location, int $radius, string $level, bool $allMobs){
         $this->centers->set($blockName, array(
             "xPos" => $location->getX(),
             "yPos" => $location->getY(),
@@ -83,20 +83,20 @@ class Main extends PluginBase implements Listener {
         $this->centers->save();
     }
 
-	/**
-	* @param Player $player
-	*
-	* @return bool
-	*/
-	public function inTapMode(Player $player): bool {
-		return isset($this->tapping[$player->getName()]);
-	}
+    /**
+     * @param Player $player
+     *
+     * @return bool
+     */
+    public function inTapMode(Player $player) : bool{
+        return isset($this->tapping[$player->getName()]);
+    }
 
-	/**
-	* @param CreatureSpawnEvent $event
-	*/
-	public function onCreatureSpawn(CreatureSpawnEvent $event){
-	    if(!$event->isCancelled()){
+    /**
+     * @param CreatureSpawnEvent $event
+     */
+    public function onCreatureSpawn(CreatureSpawnEvent $event){
+        if(!$event->isCancelled()){
             if(in_array($event->getLevel()->getName(), $this->getConfig()->get("Disabled-Worlds"))){
                 $event->setCancelled();
             }
@@ -117,86 +117,86 @@ class Main extends PluginBase implements Listener {
         }
     }
 
-	/**
-	* @param CommandSender $sender
-	* @param Command       $command
-	* @param string        $commandLabel
-	* @param array         $args
-	*
-	* @return bool
-	*/
-	public function onCommand(CommandSender $sender, Command $command, string $commandLabel, array $args): bool {
-		if($sender->hasPermission("pexprotection.command")) {
-			if(isset($args[1])) {
+    /**
+     * @param CommandSender $sender
+     * @param Command       $command
+     * @param string        $commandLabel
+     * @param array         $args
+     *
+     * @return bool
+     */
+    public function onCommand(CommandSender $sender, Command $command, string $commandLabel, array $args) : bool{
+        if($sender->hasPermission("pexprotection.command")){
+            if(isset($args[1])){
 
-				switch($args[0]) {
-					case "add":
-					case "set":
-					case "create":
-					case "make":
-						if(!($sender instanceof Player)) {
-							$sender->sendMessage(TF::RED . "You cannot execute this command using console.");
-							return true;
-						}
-						if(!$this->isCenterBlock($args[1])) {
-							if(isset($args[2])) {
-								$sender->sendMessage(TF::AQUA . "Tap a block to add a protection center block with the name " . $args[1] . "!");
-								$this->tapping[$sender->getName()] = $sender->getName();
+                switch($args[0]){
+                    case "add":
+                    case "set":
+                    case "create":
+                    case "make":
+                        if(!($sender instanceof Player)){
+                            $sender->sendMessage(TF::RED . "You cannot execute this command using console.");
+                            return true;
+                        }
+                        if(!$this->isCenterBlock($args[1])){
+                            if(isset($args[2])){
+                                $sender->sendMessage(TF::AQUA . "Tap a block to add a protection center block with the name " . $args[1] . "!");
+                                $this->tapping[$sender->getName()] = $sender->getName();
                                 $this->level = $sender->getLevel()->getName();
-								$this->blockName = $args[1];
-								$this->radius = (int) $args[2];
+                                $this->blockName = $args[1];
+                                $this->radius = (int) $args[2];
                                 if(isset($args[3])){
                                     $this->allMobs = (strcmp(strtolower($args[3]), "true") == 0) ? true : false;
-                                } else {
+                                }else{
                                     if($this->getConfig()->exists("All-Mobs")){
                                         $this->allMobs = $this->getConfig()->get("All-Mobs");
-                                    } else {
+                                    }else{
                                         $this->allMobs = true;
                                     }
                                 }
-							} else {
-								$sender->sendMessage(TF::RED . "You have to define a radius for the protection center block!");
-							}
-						} else {
-							$sender->sendMessage(TF::RED . "A protection center block with that name already exists");
-						}
-						return true;
+                            }else{
+                                $sender->sendMessage(TF::RED . "You have to define a radius for the protection center block!");
+                            }
+                        }else{
+                            $sender->sendMessage(TF::RED . "A protection center block with that name already exists");
+                        }
+                        return true;
 
-					case "disableworld":
-					case "world":
-						$sender->sendMessage(TF::GREEN . "Successfully added a world to disable monster spawning.");
-						$worlds = $this->centers->get("Disabled-Worlds");
-						$worlds[] = $args[1];
-						$this->centers->set("Disabled-Worlds", $worlds);
-						$this->centers->save();
-						return true;
+                    case "disableworld":
+                    case "world":
+                        $sender->sendMessage(TF::GREEN . "Successfully added a world to disable monster spawning.");
+                        $worlds = $this->centers->get("Disabled-Worlds");
+                        $worlds[] = $args[1];
+                        $this->centers->set("Disabled-Worlds", $worlds);
+                        $this->centers->save();
+                        return true;
 
-					case "delete":
-					case "del":
-					case "remove":
-					case "rem":
-					case "clear":
-						if($this->isCenterBlock($args[1])) {
-							$sender->sendMessage(TF::AQUA . "Successfully removed the protection center block " . $args[1] . "!");
-							$this->centers->remove($args[1]);
-							$this->centers->save();
-						} else {
-							$sender->sendMessage(TF::RED . "That protection center block name does not exist.");
-						}
-						return true;
-				}
-			} else {
-				$sender->sendMessage(TF::RED . "Please provide a valid protection center block name!");
-				return true;
-			}
-		}
-		return false;
-	}
+                    case "delete":
+                    case "del":
+                    case "remove":
+                    case "rem":
+                    case "clear":
+                        if($this->isCenterBlock($args[1])){
+                            $sender->sendMessage(TF::AQUA . "Successfully removed the protection center block " . $args[1] . "!");
+                            $this->centers->remove($args[1]);
+                            $this->centers->save();
+                        }else{
+                            $sender->sendMessage(TF::RED . "That protection center block name does not exist.");
+                        }
+                        return true;
+                }
+            }else{
+                $sender->sendMessage(TF::RED . "Please provide a valid protection center block name!");
+                return true;
+            }
+        }
+        return false;
+    }
 
-	/**
-	* @param PlayerInteractEvent $ev
-	*/
-	public function onInteract(PlayerInteractEvent $ev){
+    /**
+     * @param PlayerInteractEvent $ev
+     */
+    public function onInteract(PlayerInteractEvent $ev){
         if(!$ev->isCancelled()){
             $p = $ev->getPlayer();
             if($this->inTapMode($p)){
