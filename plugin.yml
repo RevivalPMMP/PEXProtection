@@ -7,7 +7,7 @@ version: 0.1.1
 commands:
   pexprotection:
     description: "PEXProtection command"
-    usage: "/pexprotection <add|del>"
+    usage: "/pexprotection <add|del|world> <args...>"
     aliases: [pexp]
     permission: "pexprotection.command"
 permissions:
