@@ -36,19 +36,19 @@ class Main extends PluginBase implements Listener {
 	}
 
 	/**
-	* @param string $blockName
-	*
-	* @return bool
-	*/
+	 * @param string $blockName
+	 *
+	 * @return bool
+	 */
 	public function isCenterBlock(string $blockName) : bool{
 		return $this->centers->exists($blockName);
 	}
 
 	/**
-	* @param Position $position
-	*
-	* @return bool
-	*/
+	 * @param Position $position
+	 *
+	 * @return bool
+	 */
 	public function isCenterBlockLocation(Position $position){
 		foreach($this->centers->getAll() as $center){
 			if($center["xPos"] === $position->x
@@ -87,17 +87,17 @@ class Main extends PluginBase implements Listener {
 	}
 
 	/**
-	* @param Player $player
-	*
-	* @return bool
-	*/
+	 * @param Player $player
+	 *
+	 * @return bool
+	 */
 	public function inTapMode(Player $player) : bool{
 		return isset($this->tapping[$player->getName()]);
 	}
 
 	/**
-	* @param CreatureSpawnEvent $event
-	*/
+	 * @param CreatureSpawnEvent $event
+	 */
 	public function onCreatureSpawn(CreatureSpawnEvent $event){
 		if(!$event->isCancelled()){
 			if(in_array($event->getLevel()->getName(), $this->getConfig()->get("Disabled-Worlds", []))){
@@ -121,13 +121,13 @@ class Main extends PluginBase implements Listener {
 	}
 
 	/**
-	* @param CommandSender $sender
-	* @param Command       $command
-	* @param string        $commandLabel
-	* @param array         $args
-	*
-	* @return bool
-	*/
+	 * @param CommandSender $sender
+	 * @param Command       $command
+	 * @param string        $commandLabel
+	 * @param array         $args
+	 *
+	 * @return bool
+	 */
 	public function onCommand(CommandSender $sender, Command $command, string $commandLabel, array $args) : bool{
 		if(isset($args[1])){
 			switch($args[0]){
@@ -148,7 +148,20 @@ class Main extends PluginBase implements Listener {
 							$this->blockName = $args[1];
 							$this->radius = (int) $args[2];
 							if(isset($args[3])){
-								$this->allMobs = (strcmp(strtolower($args[3]), "true") === 0);
+								$v = trim($args[3]);
+								switch(strtolower($v)){
+									case "on":
+									case "true":
+									case "yes":
+										$v = true;
+										break;
+									case "off":
+									case "false":
+									case "no":
+										$v = false;
+										break;
+								}
+								$this->allMobs = $v;
 							}else{
 								$this->allMobs = $this->getConfig()->get("All-Mobs", true);
 							}
@@ -168,6 +181,7 @@ class Main extends PluginBase implements Listener {
 					$worlds[] = $args[1];
 					$this->getConfig()->set("Disabled-Worlds", $worlds);
 					$this->getConfig()->save(true);
+
 					return true;
 					break;
 				case "delete":
