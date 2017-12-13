@@ -1,0 +1,9 @@
+---
+# Worlds where entities will not be allowed to spawn automatically.
+# eg Disabled-Worlds: [world, lobby, arena, home]
+Disabled-Worlds: []
+
+# Default setting for all-mobs when creating protected areas in centers.yml.
+# True means that all mobs will be blocked from spawning inside the protected area. 
+All-Mobs: true
+...
