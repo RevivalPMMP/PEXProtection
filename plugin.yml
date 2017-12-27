@@ -1,7 +1,6 @@
 name: PEXProtection
 author: "RevivalPMMP"
-api:
-- 3.0.0-ALPHA9
+api: [3.0.0-ALPHA9, 3.0.0-ALPHA10]
 main: RevivalPMMP\PEXProtection\Main
 version: 0.1.1
 commands:
